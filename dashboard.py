@@ -257,7 +257,7 @@ dados_por_ano["valor_med_litro"] = dados_por_ano["valor"] / dados_por_ano["quant
 
 dados_por_ano = dados_por_ano.reset_index()
 
-
+st.align("left")
 st.write("Teste")
 ax = plt.figure(figsize=(10,5))
 sns.scatterplot(x="ano", y="quantidade", data=dados_por_ano)

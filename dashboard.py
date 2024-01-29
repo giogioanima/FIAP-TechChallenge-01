@@ -269,12 +269,298 @@ dados_por_ano = dados_por_ano.reset_index()
 met_quantidade = dados_por_ano["quantidade"].sum()
 met_valor = dados_por_ano["valor"].sum()
 
+media_valor = dados_por_ano["valor"].sum() / 15
+media_quantidade = dados_por_ano["quantidade"].sum() / 15
+
 def formata_numero(valor, prefixo=""):
     for unidade in ["", "mil"]:
         if valor <1000:
             return f'{prefixo} {valor:,.2f} {unidade}'
         valor /= 1000
     return f'{prefixo} {valor:,.2f} MM'
+
+
+# TABELA COM LONGITUDE E LATITUDE
+lat = {
+"Afeganistão": 33.93911,
+"África do Sul": -30.5595,
+"Alemanha, República Democrática": 51.1657,
+"Angola": -8.81155,
+"Anguilla": 18.2206,
+"Antígua e Barbuda": 17.0608,
+"Antilhas Holandesas": 12.2261,
+"Argentina": -38.4161,
+"Aruba": 12.5211,
+"Austrália": -25.2744,
+"Áustria": 47.5162,
+"Bahamas": 25.0343,
+"Bangladesh": 23.685,
+"Barbados": 13.1939,
+"Barein": 25.9304,
+"Bélgica": 50.5039,
+"Belice": 17.1899,
+"Benin": 9.3077,
+"Bolívia": -16.2902,
+"Bósnia-Herzegovina": 43.9159,
+"Brasil": -14.235,
+"Bulgária": 42.7339,
+"Cabo Verde": 16.5388,
+"Camarões": 7.3697,
+"Canadá": 56.1304,
+"Catar": 25.3548,
+"Cayman, Ilhas": 19.3133,
+"Chile": -35.6751,
+"China": 35.8617,
+"Chipre": 35.1264,
+"Cingapura": 1.3521,
+"Cocos (Keeling), Ilhas": -12.1642,
+"Colômbia": 4.5709,
+"Comores": -11.6455,
+"Congo": -4.0383,
+"Coreia, Republica Sul": 35.9078,
+"Costa do Marfim": 7.539,
+"Costa Rica": 9.7489,
+"Croácia": 45.1,
+"Cuba": 21.5218,
+"Curaçao": 12.1696,
+"Dinamarca": 56.2639,
+"Dominica": 15.415,
+"El Salvador": 13.7942,
+"Emirados Arabes Unidos": 23.4241,
+"Equador": -1.8312,
+"Eslovaca, Republica": 48.669,
+"Espanha": 40.4637,
+"Estados Unidos": 37.0902,
+"Estônia": 58.5953,
+"Filipinas": 12.8797,
+"Finlândia": 61.9241,
+"França": 46.6034,
+"Gana": 7.9465,
+"Gibraltar": 36.1408,
+"Granada": 12.1165,
+"Grécia": 39.0742,
+"Guatemala": 15.7835,
+"Guiana": 4.8604,
+"Guiana Francesa": 3.9339,
+"Guine Bissau": 11.8037,
+"Guine Equatorial": 1.6508,
+"Haiti": 18.9712,
+"Honduras": 15.2,
+"Hong Kong": 22.3193,
+"Hungria": 47.1625,
+"Ilha de Man": 54.2361,
+"Ilhas Virgens": 18.3358,
+"India": 20.5937,
+"Indonésia": -0.7893,
+"Irã": 32.4279,
+"Iraque": 33.2232,
+"Irlanda": 53.4129,
+"Itália": 41.8719,
+"Jamaica": 18.1096,
+"Japão": 36.2048,
+"Jordânia": 30.5852,
+"Letônia": 56.8796,
+"Líbano": 33.8547,
+"Libéria": 6.4281,
+"Luxemburgo": 49.8153,
+"Malásia": 4.2105,
+"Malta": 35.9375,
+"Marshall, Ilhas": 7.1315,
+"Mauritânia": 21.0079,
+"México": 23.6345,
+"Moçambique": -18.6657,
+"Montenegro": 42.7087,
+"Namibia": -22.9576,
+"Nicaragua": 12.8654,
+"Nigéria": 9.082,
+"Noruega": 60.472,
+"Nova Caledônia": -20.9043,
+"Nova Zelândia": -40.9006,
+"Omã": 21.4735,
+"Países Baixos": 52.1326,
+"Panamá": 8.5379,
+"Paraguai": -23.4425,
+"Peru": -9.19,
+"Polônia": 51.9194,
+"Porto Rico": 18.2208,
+"Portugal": 39.3999,
+"Quênia": -0.0236,
+"Reino Unido": 55.3781,
+"República Dominicana": 18.7357,
+"Rússia": 61.524,
+"São Tomé e Príncipe": 0.1864,
+"São Vicente e Granadinas": 12.9843,
+"Senegal": 14.4974,
+"Serra Leoa": 8.4606,
+"Singapura": 1.3521,
+"Suazilândia": -26.5225,
+"Suécia": 60.1282,
+"Suíça": 46.8182,
+"Suriname": 3.9193,
+"Tailândia": 15.870,
+"Taiwan (FORMOSA)": 23.6978,
+"Tanzânia": -6.369,
+"Tcheca, República": 49.8175,
+"Togo": 8.6195,
+"Trinidade Tobago": 10.6918,
+"Tunísia": 33.8869,
+"Turquia": 38.9637,
+"Tuvalu": -7.1095,
+"Uruguai": -32.5228,
+"Vanuatu": -15.376,
+"Venezuela": 6.4238,
+"Vietnã": 14.0583
+}
+
+lon = {
+"Afeganistão": 67.709953,
+"África do Sul": 22.9375,
+"Alemanha, República Democrática": 10.4515,
+"Angola": 17.8739,
+"Anguilla": -63.0686,
+"Antígua e Barbuda": -61.7964,
+"Antilhas Holandesas": -68.2997,
+"Argentina": -63.6167,
+"Aruba": -69.9683,
+"Austrália": 133.7751,
+"Áustria": 14.5501,
+"Bahamas": -77.3963,
+"Bangladesh": 90.3563,
+"Barbados": -59.5432,
+"Barein": 50.6378,
+"Bélgica": 4.4699,
+"Belice": -88.4976,
+"Benin": 2.3158,
+"Bolívia": -63.5887,
+"Bósnia-Herzegovina": 17.6791,
+"Brasil": -51.9253,
+"Bulgária": 25.4858,
+"Cabo Verde": -23.0418,
+"Camarões": 12.3547,
+"Canadá": -106.3468,
+"Catar": 51.1839,
+"Cayman, Ilhas": -81.2546,
+"Chile": -71.5429,
+"China": 104.1954,
+"Chipre": 33.4299,
+"Cingapura": 103.8198,
+"Cocos (Keeling), Ilhas": 96.8705,
+"Colômbia": -74.2973,
+"Comores": 43.8722,
+"Congo": 21.7587,
+"Coreia, Republica Sul": 127.7669,
+"Costa do Marfim": -5.5471,
+"Costa Rica": -84.204,
+"Croácia": 15.2000,
+"Cuba": -77.7812,
+"Curaçao": -68.9900,
+"Dinamarca": 9.5018,
+"Dominica": -61.371,
+"El Salvador": -88.8965,
+"Emirados Arabes Unidos": 53.8478,
+"Equador": -78.1834,
+"Eslovaca, Republica": 19.0402,
+"Espanha": -3.7492,
+"Estados Unidos": -95.7129,
+"Estônia": 25.0136,
+"Filipinas": 121.774,
+"Finlândia": 25.7482,
+"França": 1.4429,
+"Gana": -1.0232,
+"Gibraltar": -5.3536,
+"Granada": -61.679,
+"Grécia": 21.8243,
+"Guatemala": -90.2308,
+"Guiana": -58.9302,
+"Guiana Francesa": -53.1258,
+"Guine Bissau": -15.1804,
+"Guine Equatorial": 10.2679,
+"Haiti": -72.2852,
+"Honduras": -86.2419,
+"Hong Kong": 114.1694,
+"Hungria": 19.5033,
+"Ilha de Man": -4.5481,
+"Ilhas Virgens": -64.8963,
+"India": 78.9629,
+"Indonésia": 113.9213,
+"Irã": 53.6880,
+"Iraque": 43.6793,
+"Irlanda": -8.2439,
+"Itália": 12.4964,
+"Jamaica": -77.2975,
+"Japão": 138.2529,
+"Jordânia": 36.2384,
+"Letônia": 24.6032,
+"Líbano": 35.8623,
+"Libéria": -9.4295,
+"Luxemburgo": 6.1296,
+"Malásia": 101.9758,
+"Malta": 14.3754,
+"Marshall, Ilhas": 171.1845,
+"Mauritânia": -10.9408,
+"México": -102.5528,
+"Moçambique": 35.5296,
+"Montenegro": 19.3744,
+"Namibia": 18.4904,
+"Nicaragua": -85.2072,
+"Nigéria": 8.6753,
+"Noruega": 8.4689,
+"Nova Caledônia": 165.6180,
+"Nova Zelândia": 174.8860,
+"Omã": 55.9233,
+"Países Baixos": 5.2913,
+"Panamá": -80.7821,
+"Paraguai": -58.4438,
+"Peru": -75.0152,
+"Polônia": 19.1451,
+"Porto Rico": -66.5901,
+"Portugal": -8.2245,
+"Quênia": 37.9062,
+"Reino Unido": -3.4360,
+"República Dominicana": -70.1627,
+"Rússia": 105.3197,
+"São Tomé e Príncipe": 6.6131,
+"São Vicente e Granadinas": -61.2872,
+"Senegal": -14.4524,
+"Serra Leoa": -11.7799,
+"Singapura": 103.8198,
+"Suazilândia": 31.4659,
+"Suécia": 18.6435,
+"Suíça": 8.2275,
+"Suriname": -56.0278,
+"Tailândia": 100.9925,
+"Taiwan (FORMOSA)": 120.9605,
+"Tanzânia": 34.8888,
+"Tcheca, República": 15.4729,
+"Togo": 0.8248,
+"Trinidade Tobago": -61.2225,
+"Tunísia": 9.5375,
+"Turquia": 35.2433,
+"Tuvalu": 177.6493,
+"Uruguai": -55.7658,
+"Vanuatu": 166.9592,
+"Venezuela": -66.5897,
+"Vietnã": 108.2772
+}
+
+df_total["lat"] = df_total["pais"].map(lat)
+df_total["lon"] = df_total["pais"].map(lon)
+
+topvalor = df_quinze[["pais", "valor", "quantidade"]].groupby(['pais']).sum().sort_values("valor", ascending=False).reset_index()
+topvalor = topvalor.head()
+
+topvol = df_quinze[["pais", "valor", "quantidade"]].groupby(['pais']).sum().sort_values("quantidade", ascending=False).reset_index()
+topvol = topvol.head()
+
+toppreco = df_quinze[["pais", "valor", "quantidade"]].groupby(['pais']).sum().reset_index()
+fil_toppreco = toppreco[toppreco["pais"].isin(["Rússia", "Paraguai", "Estados Unidos"])]
+fil_toppreco["preco_medio"] = fil_toppreco["valor"] / fil_toppreco["quantidade"]
+fil_toppreco = fil_toppreco.sort_values("preco_medio", ascending=True)
+fil_toppreco = fil_toppreco.head(3)
+    
+## GRAFICO MAPA
+##receita_dados = df_quinze.groupby("pais")[['valor']].sum()
+##receita_dados = df_quinze.drop_duplicates(subset='pais')[["pais", "lat", "lon"]].merge(df_quinze, left_on="pais", right_index=True).sort_values("valor", ascending=False)
 
 ##### INÍCIO DO DASHBOARD #####
 
@@ -384,6 +670,8 @@ with tab1:
         st.metric("Valor Total Exportado (US$)", formata_numero(met_valor, 'US$'))
     with coluna3:
         st.metric("Preço Médio do Litro (US$)", formata_numero(df_valormed_quinze, 'US$'))
+    st.markdown("Resumo com período")
+
 
     st.markdown("""---""")
     st.markdown('<p class="tab1-title">Total de Exportação - Ano a Ano</p>', unsafe_allow_html=True)
@@ -392,34 +680,216 @@ with tab1:
     with coluna4:
         option = st.selectbox(
         'Selecione o dado:',
-        ('Valor (US$)', 'Volume (Litros)'))
+        ('Valor Exportado por Ano (US$)', 'Volume Exportado por Ano (Litros)'))
 
-        if option == "Valor (US$)":
-            ax = plt.figure(figsize=(9,5))
-            #st.bar_chart(data=dados_por_ano, x="ano", y="valor")
-            sns.scatterplot(x="ano", y="valor", data=dados_por_ano)
-            sns.lineplot(x="ano", y="valor", data=dados_por_ano)
-            plt.title("Valor (US$) Exportado por Ano")
-            plt.ylim(0, 30_000_000)
-            plt.xlabel("Ano")
-            plt.ylabel("Valor (US$)")
-            plt.grid(axis="y", linestyle='dashed', color='black', alpha=0.2)
+        if option == "Valor Exportado por Ano (US$)":
+            ax = px.bar(dados_por_ano, x="ano", y="valor", color_discrete_sequence=['#c43366'], width=600, height=450, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Valor Exportado por Ano (US$)")
+            ax.update_xaxes(dtick=1)
+            ax.update_layout(
+            yaxis=dict(
+            title="Valor Exportado (US$)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            tickvals = [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            tickangle=-45,
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ))
+            ax.add_hline(y=media_valor, line_color="black", line_width=1, line_dash="dot", label=dict(text="                                                                  Valor Médio: US$ 7,51 MM", textposition="middle", font=dict(size=14, color="black"))
+            )
             st.plotly_chart(ax)
 
-        elif option == "Volume (Litros)":
-            bx = plt.figure(figsize=(10,5))
-            sns.scatterplot(x="ano", y="quantidade", data=dados_por_ano)
-            sns.lineplot(x="ano", y="quantidade", data=dados_por_ano, )
-            plt.title("Litros de Vinho Exportado por Ano")
-            plt.ylim(0, 30_000_000)
-            plt.xlabel("Ano")
-            plt.ylabel("Volume (Litros)")
+        elif option == "Volume Exportado por Ano (Litros)":
+            bx = px.bar(dados_por_ano, x="ano", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Volume Exportado por Ano (Litros)")
+            bx.update_xaxes(dtick=1)
+            bx.update_layout(
+            yaxis=dict(
+            title="Valor Exportado (US$)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            tickvals = [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            tickangle=-45,
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ))
+            bx.add_hline(y=media_quantidade, line_color="black", line_width=1, line_dash="dot", label=dict(text="                                                           Volume Médio: 5,87 MM litros", textposition="middle", font=dict(size=14, color="black"))
+            )
             st.plotly_chart(bx)
 
     with coluna5:
         st.write("Relatório")
    
+    st.markdown("""---""")
+    st.markdown('<p class="tab1-title">Países: Maiores Importadores da MaWine</p>', unsafe_allow_html=True)
+
+    coluna6, coluna7 = st.columns(2)
     
+    with coluna6:
+        st.write("Relatório")
+    
+    with coluna7:
+        option = st.selectbox(
+        'Selecione o dado:',
+        ('Valor Exportado por País (US$)', 'Volume Exportado por País (Litros)', 'Preço Médio (US$/L)'))
+
+        if option == "Valor Exportado por País (US$)":
+            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
+            ax.update_xaxes(dtick=1)
+            ax.update_layout(
+            yaxis=dict(
+            title="Valor Exportado (US$)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ))
+
+            st.plotly_chart(ax)
+
+        elif option == "Volume Exportado por País (Litros)":
+            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
+            bx.update_xaxes(dtick=1)
+            bx.update_layout(
+            yaxis=dict(
+            title="Volume Exportado (Litros)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            title_standoff=20 # The higher the value, the farther away it is displayed
+            ))
+            st.plotly_chart(bx)
+
+        elif option == "Preço Médio (US$/L)":
+            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
+            cx.update_xaxes(dtick=1)
+            cx.update_layout(
+            yaxis=dict(
+            title="Preço Médio (US$/L)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ))
+            st.plotly_chart(cx)
+        
+    st.markdown("""---""")
+    st.markdown('<p class="tab1-title">Países: Top 3 - Observando de Perto</p>', unsafe_allow_html=True)
+
+    option = st.selectbox(
+        'Selecione o dado:',
+        ('Paraguai', 'Rússia', 'Estados Unidos'))
+
+    if option == "Paraguai":
+            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
+            ax.update_xaxes(dtick=1)
+            ax.update_layout(
+            yaxis=dict(
+            title="Valor Exportado (US$)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ))
+
+            st.plotly_chart(ax)
+
+    elif option == "Rússia":
+            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
+            bx.update_xaxes(dtick=1)
+            bx.update_layout(
+            yaxis=dict(
+            title="Volume Exportado (Litros)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ))
+            st.plotly_chart(bx)
+
+    elif option == "Estados Unidos":
+            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
+            cx.update_xaxes(dtick=1)
+            cx.update_layout(
+            yaxis=dict(
+            title="Preço Médio (US$/L)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ))
+            st.plotly_chart(cx)
 
 with tab2:
     df_display = df_total
@@ -434,7 +904,24 @@ with tab2:
         "continente": "Continente", 
         "valor": "Valor Exportado (US$)", 
         "quantidade": "Volume Exportado (Litros)", 
-        "valor_medio_litro": "Preço (U$/Litro)"
+        "valor_medio_litro": "Preço (U$/Litro)",
+        "lat": "Latitude",
+        "lon": "Longitude"
         }
     )
     st.dataframe(df_display)
+
+#with tab3:
+    ## GRAFICO MAPA
+    #df_mapa = df_total.groupby("pais")[['valor']].sum()
+    #df_mapa = df_total.drop_duplicates(subset='pais')[["pais", "lat", "lon"]].merge(df_total, left_on="pais", right_index=True).sort_values("valor", ascending=False)
+
+    #fig_mapa_receita = px.scatter_geo(df_mapa,
+    #                                  lat='lat',
+    #                                  lon='lon',
+    #                                  size='valor',
+    #                                  template='seaborn',
+    #                                  hover_name='pais',
+    #                                  hover_data={'lat':False, 'lon':False},
+    #                                  title='Valor (US$) de Exportação por País')
+    #st.plotly_chart(fig_mapa_receita)

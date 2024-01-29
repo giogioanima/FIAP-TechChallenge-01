@@ -824,7 +824,7 @@ with tab1:
         'Selecione o dado:',
         ('Paraguai', 'Rússia', 'Estados Unidos'))
 
-        if option == "Paraguai":
+	if option == "Paraguai":
 	        coluna8, coluna9 = st.columns(2)
 	        with coluna8:
 	            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
@@ -870,7 +870,7 @@ with tab1:
 	            ))
 	            st.plotly_chart(bx, use_container_width=True)
 		
-        elif option == "Rússia":
+	elif option == "Rússia":
             bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
             bx.update_xaxes(dtick=1)
             bx.update_layout(

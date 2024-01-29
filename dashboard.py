@@ -9,7 +9,7 @@ import plotly.figure_factory as ff
 
 
 
-dados = pd.read_csv(r'C:\Users\gih\Downloads\techchallenge01\ExpVinho 2022.csv', encoding='UTF-8', engine='python', sep=';', thousands='.', decimal=',')
+dados = pd.read_csv(r'ExpVinho 2022.csv', encoding='UTF-8', engine='python', sep=';', thousands='.', decimal=',')
 #pd.options.display.float_format = '{:,.2f}'.format
 
 dados = dados.drop('Id', axis=1)

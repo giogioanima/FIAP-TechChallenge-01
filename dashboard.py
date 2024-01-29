@@ -683,7 +683,7 @@ with tab1:
         ('Valor Exportado por Ano (US$)', 'Volume Exportado por Ano (Litros)'))
 
         if option == "Valor Exportado por Ano (US$)":
-            ax = px.bar(dados_por_ano, x="ano", y="valor", color_discrete_sequence=['#c43366'], width=600, height=450, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Valor Exportado por Ano (US$)")
+            ax = px.bar(dados_por_ano, x="ano", y="valor", color_discrete_sequence=['#c43366'], width=800, height=550, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Valor Exportado por Ano (US$)")
             ax.update_xaxes(dtick=1)
             ax.update_layout(
             yaxis=dict(
@@ -706,7 +706,7 @@ with tab1:
             ))
             ax.add_hline(y=media_valor, line_color="black", line_width=1, line_dash="dot", label=dict(text="                                                                  Valor Médio: US$ 7,51 MM", textposition="middle", font=dict(size=14, color="black"))
             )
-            st.plotly_chart(ax)
+            st.plotly_chart(ax, use_container_width=True)
 
         elif option == "Volume Exportado por Ano (Litros)":
             bx = px.bar(dados_por_ano, x="ano", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Volume Exportado por Ano (Litros)")

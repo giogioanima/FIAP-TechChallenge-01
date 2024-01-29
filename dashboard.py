@@ -825,6 +825,8 @@ with tab1:
         ('Paraguai', 'Rússia', 'Estados Unidos'))
 
     if option == "Paraguai":
+	coluna8, coluna9 = st.columns(2)
+    	with coluna8:
             ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
             ax.update_xaxes(dtick=1)
             ax.update_layout(
@@ -844,9 +846,30 @@ with tab1:
             tickfont=dict(size=14),
             title_standoff=30 # The higher the value, the farther away it is displayed
             ))
-
             st.plotly_chart(ax, use_container_width=True)
-
+	
+	with coluna9:
+            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
+            ax.update_xaxes(dtick=1)
+            ax.update_layout(
+            yaxis=dict(
+            title="Valor Exportado (US$)",
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            showgrid=True,
+            gridcolor="#c2c0c0",
+            griddash="dash",
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ),
+            xaxis = dict(
+            title="Ano",
+            tickmode = 'array',
+            titlefont=dict(size=16),
+            tickfont=dict(size=14),
+            title_standoff=30 # The higher the value, the farther away it is displayed
+            ))
+            st.plotly_chart(ax, use_container_width=True)
+	
     elif option == "Rússia":
             bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
             bx.update_xaxes(dtick=1)

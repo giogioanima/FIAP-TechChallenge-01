@@ -683,7 +683,7 @@ with tab1:
         ('Valor Exportado por Ano (US$)', 'Volume Exportado por Ano (Litros)'))
 
         if option == "Valor Exportado por Ano (US$)":
-            ax = px.bar(dados_por_ano, x="ano", y="valor", color_discrete_sequence=['#c43366'], width=800, height=550, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Valor Exportado por Ano (US$)")
+            ax = px.bar(dados_por_ano, x="ano", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Valor Exportado por Ano (US$)")
             ax.update_xaxes(dtick=1)
             ax.update_layout(
             yaxis=dict(
@@ -709,7 +709,7 @@ with tab1:
             st.plotly_chart(ax, use_container_width=True)
 
         elif option == "Volume Exportado por Ano (Litros)":
-            bx = px.bar(dados_por_ano, x="ano", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Volume Exportado por Ano (Litros)")
+            bx = px.bar(dados_por_ano, x="ano", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Volume Exportado por Ano (Litros)")
             bx.update_xaxes(dtick=1)
             bx.update_layout(
             yaxis=dict(
@@ -732,7 +732,7 @@ with tab1:
             ))
             bx.add_hline(y=media_quantidade, line_color="black", line_width=1, line_dash="dot", label=dict(text="                                                           Volume Médio: 5,87 MM litros", textposition="middle", font=dict(size=14, color="black"))
             )
-            st.plotly_chart(bx)
+            st.plotly_chart(bx, use_container_width=True)
 
     with coluna5:
         st.write("Relatório")
@@ -751,7 +751,7 @@ with tab1:
         ('Valor Exportado por País (US$)', 'Volume Exportado por País (Litros)', 'Preço Médio (US$/L)'))
 
         if option == "Valor Exportado por País (US$)":
-            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
+            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
             ax.update_xaxes(dtick=1)
             ax.update_layout(
             yaxis=dict(
@@ -771,10 +771,10 @@ with tab1:
             title_standoff=20 # The higher the value, the farther away it is displayed
             ))
 
-            st.plotly_chart(ax)
+            st.plotly_chart(ax, use_container_width=True)
 
         elif option == "Volume Exportado por País (Litros)":
-            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
+            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
             bx.update_xaxes(dtick=1)
             bx.update_layout(
             yaxis=dict(
@@ -793,10 +793,10 @@ with tab1:
             tickfont=dict(size=14),
             title_standoff=20 # The higher the value, the farther away it is displayed
             ))
-            st.plotly_chart(bx)
+            st.plotly_chart(bx, use_container_width=True)
 
         elif option == "Preço Médio (US$/L)":
-            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
+            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
             cx.update_xaxes(dtick=1)
             cx.update_layout(
             yaxis=dict(
@@ -815,7 +815,7 @@ with tab1:
             tickfont=dict(size=14),
             title_standoff=30 # The higher the value, the farther away it is displayed
             ))
-            st.plotly_chart(cx)
+            st.plotly_chart(cx, use_container_width=True)
         
     st.markdown("""---""")
     st.markdown('<p class="tab1-title">Países: Top 3 - Observando de Perto</p>', unsafe_allow_html=True)
@@ -825,7 +825,7 @@ with tab1:
         ('Paraguai', 'Rússia', 'Estados Unidos'))
 
     if option == "Paraguai":
-            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
+            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
             ax.update_xaxes(dtick=1)
             ax.update_layout(
             yaxis=dict(
@@ -845,10 +845,10 @@ with tab1:
             title_standoff=30 # The higher the value, the farther away it is displayed
             ))
 
-            st.plotly_chart(ax)
+            st.plotly_chart(ax, use_container_width=True)
 
     elif option == "Rússia":
-            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
+            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
             bx.update_xaxes(dtick=1)
             bx.update_layout(
             yaxis=dict(
@@ -867,10 +867,10 @@ with tab1:
             tickfont=dict(size=14),
             title_standoff=30 # The higher the value, the farther away it is displayed
             ))
-            st.plotly_chart(bx)
+            st.plotly_chart(bx, use_container_width=True)
 
     elif option == "Estados Unidos":
-            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=600, height=450, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
+            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
             cx.update_xaxes(dtick=1)
             cx.update_layout(
             yaxis=dict(
@@ -889,7 +889,7 @@ with tab1:
             tickfont=dict(size=14),
             title_standoff=30 # The higher the value, the farther away it is displayed
             ))
-            st.plotly_chart(cx)
+            st.plotly_chart(cx, use_container_width=True)
 
 with tab2:
     df_display = df_total

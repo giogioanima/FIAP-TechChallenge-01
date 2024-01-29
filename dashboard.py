@@ -9,8 +9,8 @@ import plotly.figure_factory as ff
 
 
 
-dados = pd.read_csv(r'ExpVinho 2022.csv', encoding='UTF-8', engine='python', sep=';', thousands='.', decimal=',')
-pd.options.display.float_format = '{:.2f}'.format
+dados = pd.read_csv(r'C:\Users\gih\Downloads\techchallenge01\ExpVinho 2022.csv', encoding='UTF-8', engine='python', sep=';', thousands='.', decimal=',')
+#pd.options.display.float_format = '{:,.2f}'.format
 
 dados = dados.drop('Id', axis=1)
 
@@ -48,6 +48,12 @@ anual_valor_aberto["ano"] = anual_valor_aberto["ano"].dt.year
 anual_valor_aberto.info()
 
 df_total = anual_qntd_aberto.join(anual_valor_aberto["valor"])
+
+df_total = df_total[df_total["quantidade"] != 0]
+df_total = df_total.sort_values(by="ano", ascending=True)
+df_total = df_total.reset_index()
+df_total.head()
+
 
 df_total["pais_origem"] = "Brasil"
 
@@ -191,6 +197,7 @@ df_total["valor_medio_litro"].fillna(0, inplace=True)
 
 df_total = df_total[["ano", "pais_origem", "pais", "continente", "valor", "quantidade", "valor_medio_litro"]]
 
+
 df_quinze = df_total.query("ano>=2008")
 
 dolar_mes_ano = """Ano/Mês	Janeiro	Fevereiro	Março	Abril	Maio	Junho	Julho	Agosto	Setembro	Outubro	Novembro	Dezembro
@@ -254,18 +261,183 @@ df_quinze = df_quinze.merge(dolar_dez, on="ano")
 dados_por_ano = df_quinze[["ano", "valor", "quantidade"]]
 dados_por_ano = dados_por_ano.groupby("ano").sum()
 dados_por_ano["valor_med_litro"] = dados_por_ano["valor"] / dados_por_ano["quantidade"]
+df_valormed_quinze = dados_por_ano["valor"].sum() / dados_por_ano["quantidade"].sum()
 
 dados_por_ano = dados_por_ano.reset_index()
 
-st.align("left")
-st.write("Teste")
-ax = plt.figure(figsize=(10,5))
-sns.scatterplot(x="ano", y="quantidade", data=dados_por_ano)
-sns.lineplot(x="ano", y="quantidade", data=dados_por_ano, )
-plt.title("Litros de Vinho Exportado por Ano")
-plt.ylim(0, 30_000_000)
-plt.xlabel("Ano")
-plt.ylabel("Volume (Litros)")
 
-st.plotly_chart(ax)
-st.dataframe(dados_por_ano)
+met_quantidade = dados_por_ano["quantidade"].sum()
+met_valor = dados_por_ano["valor"].sum()
+
+def formata_numero(valor, prefixo=""):
+    for unidade in ["", "mil"]:
+        if valor <1000:
+            return f'{prefixo} {valor:,.2f} {unidade}'
+        valor /= 1000
+    return f'{prefixo} {valor:,.2f} MM'
+
+##### INÍCIO DO DASHBOARD #####
+
+st.set_page_config(page_title="Tech Challenge 01 - Gio Queiroz", page_icon=":wine_glass:", layout="wide", initial_sidebar_state="auto", menu_items=None)
+
+# CABEÇALHO
+st.markdown(
+        """
+    <style>
+    .title-style {
+        text-align: left;
+        font-weight: bold;
+        color: #962450;
+        font-size: 40px;
+    }
+
+    .subtitle-style {
+        text-align: left;
+        font-weight: bold;
+        color: #737373;
+        font-size: 40px;
+    }
+
+    .about-style {
+        font-weight: bold;
+        color: #d93474;
+    }
+
+     .about2-style {
+        font-weight: normal;
+        color: #000000;
+    }
+
+    .about3-style {
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
+        font-size: 16px;
+        font-weight: normal;
+    }
+
+    .button:hover {
+        font-size: 16px;
+        font-weight: normal;
+        color: red;
+    }
+
+	.stTabs [data-baseweb="tab"] {
+		height: 50px;
+        white-space: pre-wrap;
+		border-radius: 4px 4px 0px 0px;
+		gap: 1px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+    }
+
+    .tab1-title {
+        font-weight: bold;
+        font-size: 30px;
+        color: #962450;
+    }
+
+    [data-testid="stMetric"] {
+        background-color: #e8e8e8;
+        border-radius: 10px;
+        text-align: left;
+        font-weight: bold;
+        color: #962450;
+        padding: 5% 5% 5% 5%;
+        font-size: 40px;
+        border-style: groove;
+        border-width: 1px;
+        border-color: #962450;
+    }
+
+    .stSelectbox:first-of-type > div[data-baseweb="select"] > div {
+	    width: 200px;
+	}
+}
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
+st.markdown('<p class="title-style">MaWine: <h n class="subtitle-style">Exportação de Vinhos de Mesa</h></p>', unsafe_allow_html=True)
+st.write("Bem-vindo ao relatório de exportação de vinhos da MaWine.")
+
+st.markdown(':wine_glass:<h class="about-style"> Sobre a empresa: <h n class="about2-style">A MaWine é uma produtora e distribuidora de vinhos situada no Nordeste do Brasil. Fundada em 1970, oferece uma variedade rótulos de vinhos para diversos clientes ao redor do mundo.</h>', unsafe_allow_html=True)
+st.markdown(':male-office-worker:<h class="about-style"> Sobre o time responsável: <h n class="about2-style">Somos Experts em Data Analytics e fazemos parte do DataTeam da MaWine.</h>', unsafe_allow_html=True)
+
+st.markdown('<p class="about-style">Objetivos do Relatório:</p>', unsafe_allow_html=True)
+st.markdown("- Apresentar aos investidores e acionistas o montante de venda de exportação da MaWine nos últimos 15 anos, separando a análise por país e trazendo prospecções futuras e ações para uma melhoria nas exportações.")
+
+st.markdown('<p class="about-style">Metodologia</p>', unsafe_allow_html=True)
+st.markdown("- Utilizando o python e suas bibliotecas, fizemos a aquisição, a manipulação e o tratamento dos dados obtidos na fonte, assim como utilizamos gráficos para permitir a visualização e compreensão desses dados.")
+
+st.markdown('<p class="about3-style">Fonte de Dados: <a href="http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06" class="about2-style">Dados da Vitivinicultura - Embrapa</p>', unsafe_allow_html=True)
+
+tab1, tab2, tab3 = st.tabs([":bar_chart: Dados de Exportação", ":clipboard: Tabela (Origem x Destino)", ":chart: Análise Final"])
+tab1.write()
+tab2.write()
+tab3.write()
+with tab1:
+    st.markdown('<p class="tab1-title">Resultados Gerais de Exportação</p>', unsafe_allow_html=True)
+    
+    coluna1, coluna2, coluna3 = st.columns(3)
+    with coluna1:
+        st.metric("Volume Total Exportado (L)", formata_numero(met_quantidade))
+    with coluna2:
+        st.metric("Valor Total Exportado (US$)", formata_numero(met_valor, 'US$'))
+    with coluna3:
+        st.metric("Preço Médio do Litro (US$)", formata_numero(df_valormed_quinze, 'US$'))
+
+    st.markdown("""---""")
+    st.markdown('<p class="tab1-title">Total de Exportação - Ano a Ano</p>', unsafe_allow_html=True)
+
+    coluna4, coluna5 = st.columns(2)
+    with coluna4:
+        option = st.selectbox(
+        'Selecione o dado:',
+        ('Valor (US$)', 'Volume (Litros)'))
+
+        if option == "Valor (US$)":
+            ax = plt.figure(figsize=(9,4.5))
+            sns.scatterplot(x="ano", y="valor", data=dados_por_ano)      
+            sns.lineplot(x="ano", y="valor", data=dados_por_ano)
+            plt.grid(axis="x")            
+            plt.title("Valor (US$) Exportado por Ano")
+            plt.ylim(0, 30_000_000)
+            plt.xlabel("Ano")
+            plt.ylabel("Valor (US$)")
+            st.plotly_chart(ax)
+
+        elif option == "Volume (Litros)":
+            ax = plt.figure(figsize=(10,5))
+            sns.scatterplot(x="ano", y="quantidade", data=dados_por_ano)
+            sns.lineplot(x="ano", y="quantidade", data=dados_por_ano, )
+            plt.title("Litros de Vinho Exportado por Ano")
+            plt.ylim(0, 30_000_000)
+            plt.xlabel("Ano")
+            plt.ylabel("Volume (Litros)")
+            st.plotly_chart(ax)
+
+    with coluna5:
+        st.write("Relatório")
+   
+    
+
+with tab2:
+    df_display = df_total
+    df_display["ano"] = df_display["ano"].map('{:.0f}'.format)
+    df_display["valor"] = df_display["valor"].map('$ {:,.0f}'.format)
+    df_display["quantidade"] = df_display["quantidade"].map('{:,.0f}'.format)
+    df_display["valor_medio_litro"] = df_display["valor_medio_litro"].map('$ {:,.2f}'.format)
+    df_display = df_display.rename(columns={
+        "ano": "Ano", 
+        "pais_origem": "País de Origem",
+        "pais": "País de Destino",
+        "continente": "Continente", 
+        "valor": "Valor Exportado (US$)", 
+        "quantidade": "Volume Exportado (Litros)", 
+        "valor_medio_litro": "Preço (U$/Litro)"
+        }
+    )
+    st.dataframe(df_display)

@@ -351,10 +351,6 @@ st.markdown(
         border-width: 1px;
         border-color: #962450;
     }
-
-    .stSelectbox:first-of-type > div[data-baseweb="select"] > div {
-	    width: 200px;
-	}
 }
     </style>
     """,
@@ -399,25 +395,26 @@ with tab1:
         ('Valor (US$)', 'Volume (Litros)'))
 
         if option == "Valor (US$)":
-            ax = plt.figure(figsize=(9,4.5))
-            sns.scatterplot(x="ano", y="valor", data=dados_por_ano)      
+            ax = plt.figure(figsize=(9,5))
+            #st.bar_chart(data=dados_por_ano, x="ano", y="valor")
+            sns.scatterplot(x="ano", y="valor", data=dados_por_ano)
             sns.lineplot(x="ano", y="valor", data=dados_por_ano)
-            plt.grid(axis="x")            
             plt.title("Valor (US$) Exportado por Ano")
             plt.ylim(0, 30_000_000)
             plt.xlabel("Ano")
             plt.ylabel("Valor (US$)")
+            plt.grid(axis="y", linestyle='dashed', color='black', alpha=0.2)
             st.plotly_chart(ax)
 
         elif option == "Volume (Litros)":
-            ax = plt.figure(figsize=(10,5))
+            bx = plt.figure(figsize=(10,5))
             sns.scatterplot(x="ano", y="quantidade", data=dados_por_ano)
             sns.lineplot(x="ano", y="quantidade", data=dados_por_ano, )
             plt.title("Litros de Vinho Exportado por Ano")
             plt.ylim(0, 30_000_000)
             plt.xlabel("Ano")
             plt.ylabel("Volume (Litros)")
-            st.plotly_chart(ax)
+            st.plotly_chart(bx)
 
     with coluna5:
         st.write("Relatório")

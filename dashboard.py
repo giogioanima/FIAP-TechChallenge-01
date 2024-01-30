@@ -666,7 +666,6 @@ with tab1:
         st.metric("Valor Total Exportado (US$)", formata_numero(met_valor, 'US$'))
     with coluna3:
         st.metric("Preço Médio do Litro (US$)", formata_numero(df_valormed_quinze, 'US$'))
-    st.markdown("Resumo com período")
 
 
     st.markdown("""---""")

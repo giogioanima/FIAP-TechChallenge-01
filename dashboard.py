@@ -7,11 +7,7 @@ import matplotlib.ticker as ticker
 import plotly.express as px
 import plotly.figure_factory as ff
 
-
-
 dados = pd.read_csv(r'ExpVinho 2022.csv', encoding='UTF-8', engine='python', sep=';', thousands='.', decimal=',')
-#pd.options.display.float_format = '{:,.2f}'.format
-
 dados = dados.drop('Id', axis=1)
 
 dados.rename(columns={'País': 'pais'}, inplace = True)
@@ -555,7 +551,7 @@ topvol = topvol.head()
 toppreco = df_quinze[["pais", "valor", "quantidade"]].groupby(['pais']).sum().reset_index()
 fil_toppreco = toppreco[toppreco["pais"].isin(["Rússia", "Paraguai", "Estados Unidos"])]
 fil_toppreco["preco_medio"] = fil_toppreco["valor"] / fil_toppreco["quantidade"]
-fil_toppreco = fil_toppreco.sort_values("preco_medio", ascending=True)
+fil_toppreco = fil_toppreco.sort_values("preco_medio", ascending=False)
 fil_toppreco = fil_toppreco.head(3)
     
 ## GRAFICO MAPA
@@ -646,7 +642,7 @@ st.markdown('<p class="title-style">MaWine: <h n class="subtitle-style">Exporta�
 st.write("Bem-vindo ao relatório de exportação de vinhos da MaWine.")
 
 st.markdown(':wine_glass:<h class="about-style"> Sobre a empresa: <h n class="about2-style">A MaWine é uma produtora e distribuidora de vinhos situada no Nordeste do Brasil. Fundada em 1970, oferece uma variedade rótulos de vinhos para diversos clientes ao redor do mundo.</h>', unsafe_allow_html=True)
-st.markdown(':male-office-worker:<h class="about-style"> Sobre o time responsável: <h n class="about2-style">Somos Experts em Data Analytics e fazemos parte do DataTeam da MaWine.</h>', unsafe_allow_html=True)
+st.markdown(':male-office-worker:<h class="about-style"> Sobre o time responsável: <h n class="about2-style">Somos Experts em Data Analytics e integrantes do DataTeam da MaWine.</h>', unsafe_allow_html=True)
 
 st.markdown('<p class="about-style">Objetivos do Relatório:</p>', unsafe_allow_html=True)
 st.markdown("- Apresentar aos investidores e acionistas o montante de venda de exportação da MaWine nos últimos 15 anos, separando a análise por país e trazendo prospecções futuras e ações para uma melhoria nas exportações.")
@@ -675,9 +671,10 @@ with tab1:
 
     st.markdown("""---""")
     st.markdown('<p class="tab1-title">Total de Exportação - Ano a Ano</p>', unsafe_allow_html=True)
-
-    coluna4, coluna5 = st.columns(2)
+ 
+    coluna4, coluna5 = st.columns(2, gap="large")
     with coluna4:
+        st.write("O gráfico de barras está sendo utilizado para exibir a variação das exportações, no qual o eixo x representa a passagem do tempo, enquanto o eixo y indica o valor ou volume das exportações. Há um grande destaque para o valor obtido ano de 2013 e nota-se o crescimento no período entre 2020 e 2022. Em 2009 a WuWine obteve o maior volume de exportações, contudo a um preço muito baixo.")
         option = st.selectbox(
         'Selecione o dado:',
         ('Valor Exportado por Ano (US$)', 'Volume Exportado por Ano (Litros)'))
@@ -709,7 +706,7 @@ with tab1:
             st.plotly_chart(ax, use_container_width=True)
 
         elif option == "Volume Exportado por Ano (Litros)":
-            bx = px.bar(dados_por_ano, x="ano", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Volume Exportado por Ano (Litros)")
+            bx = px.bar(dados_por_ano, x="ano", y="quantidade", color_discrete_sequence=['#962168'], width=800, height=500, range_x=[2007, 2023], range_y=[0, 25_000_000], title="Volume Exportado por Ano (Litros)")
             bx.update_xaxes(dtick=1)
             bx.update_layout(
             yaxis=dict(
@@ -734,16 +731,40 @@ with tab1:
             )
             st.plotly_chart(bx, use_container_width=True)
 
-    with coluna5:
-        st.write("Relatório")
-   
-    st.markdown("""---""")
-    st.markdown('<p class="tab1-title">Países: Maiores Importadores da MaWine</p>', unsafe_allow_html=True)
+    with coluna5:        
+        st.markdown(':triangular_flag_on_post: <h class="about3-style">Cenário de 2010</h>', unsafe_allow_html=True)
+        st.write("- As exportações de vinho brasileiro enfrentaram o câmbio desfavorável e a crise econômica internacional iniciada em 2008. Os preços no mercado internacional caíram, tornando a competitividade da uva brasileira mais desafiadora. Além disso, novas ameaças surgiram, como a produção de uvas sem sementes em escala no Peru, onde os custos são menores.")
+        st.write(" ")
+        st.markdown(':chart: <h class="about3-style">Cenário de 2013</h>', unsafe_allow_html=True)
+        st.write("- Em 2013, as exportações de vinho tiveram um pico significativo devido ao aumento expressivo no volume exportado, impulsionado pela exportação do vinho a granel, tanto de mesa quanto fino, aproveitando o programa de escoamento de produção (PEP), que conferia vantagem competitiva no mercado internacional. No entanto, houve uma desvalorização no valor do produto nesse ano. ")
+        st.write(" ")
+        st.markdown(':chart_with_downwards_trend: <h class="about3-style">Cenário de 2015</h>', unsafe_allow_html=True)
+        st.write("- Em contraste, em 2015, as exportações caíram drasticamente pela falta de adoção do PEP, resultando em uma diminuição acentuada no volume exportado. A valorização do produto não compensou a ausência do programa, enquanto a crise política e os escândalos envolvendo a Petrobrás que vieram à tona também contribuíram para o cenário desfavorável.")
+        st.write(" ")
+        st.markdown(':bulb: <h class="about3-style">Cenário de 2020 a 2022</h>', unsafe_allow_html=True)
+        st.write("- Desde 2020, a exportação de vinhos cresce devido à pandemia, que levou as pessoas a consumir mais em casa devido às restrições de viagens, diminuindo o consumo doméstico em alguns países. Isso impulsionou a demanda internacional por vinho, resultando em recordes nas exportações brasileiras em 2021, refletindo a busca por qualidade para desfrutar em casa durante o isolamento.")
+        st.markdown('<h class="about3-style">Fontes: <h n class="about2-style"><a href="https://www.infoteca.cnptia.embrapa.br/bitstream/doc/922116/1/PROTASpanoramavitivinicultura2010.pdf">1</a> | <a href="https://releia.ifsertao-pe.edu.br/jspui/bitstream/123456789/821/1/TCC%20-%20PANORAMA%20DA%20EXPORTAÇÃO%20E%20IMPORTAÇÃO%20DE%20VINHOS%20NO%20BRASIL.pdf">2</a>  | <a href="https://www.embrapa.br/busca-de-noticias/-/noticia/9952204/artigo-desempenho-da-vitivinicultura-brasileira-em-2015">3</a>  | <a href="https://www.poder360.com.br/brasil/venda-de-vinho-no-brasil-aumentou-37-na-pandemia/">4</a></h></h>', unsafe_allow_html=True)
 
-    coluna6, coluna7 = st.columns(2)
+    st.markdown("""---""")
+    st.markdown('<p class="tab1-title">Maiores Importadores da MaWine</p>', unsafe_allow_html=True)
+    
+    coluna6, coluna7 = st.columns(2, gap="large")
     
     with coluna6:
-        st.write("Relatório")
+        st.write(" ")
+        st.write(" ")
+        st.markdown(':bar_chart: <h class="about3-style">Paraguai:</h>', unsafe_allow_html=True)
+        st.write("- Exportou 29 milhões de litros nos últimos 15 anos, sendo o país que desembolsou a maior quantia em dólares.")
+        st.write("- Importante importador devido à falta de produção interna, alta demanda e proximidade geográfica que reduz custos de transporte.")
+        st.write("- Adquire o vinho brasileiro a um preço de compra favorável.")
+        st.write(" ")
+        st.markdown(':clipboard: <h class="about3-style">Rússia:</h>', unsafe_allow_html=True)
+        st.write("- A Rússia importou grande volume de vinho brasileiro (39 milhões nos últimos 15 anos), priorizando vinhos de baixa qualidade adquiridos pelo Programa de Escoamento de Produção (PEP). Embora lidere em volume adquirido, o valor total pago não é o mais alto, refletindo uma preferência por vinhos mais acessíveis.")
+        st.write(" ")
+        st.markdown(':chart_with_upwards_trend: <h class="about3-style">Estados Unidos:</h>', unsafe_allow_html=True)
+        st.write("- Apesar de não ser o maior comprador, o Estados Unidos comprou o litro do vinho brasileiro a um custo médio de US$ 2,71 nos últimos 15 anos (em contraste com a Rússia, que adquiriu a um custo 4 vezes menor). Nos últimos anos, adquiriu 3.6 milhões de litros.")
+        st.write(" ")
+
     
     with coluna7:
         option = st.selectbox(
@@ -751,7 +772,7 @@ with tab1:
         ('Valor Exportado por País (US$)', 'Volume Exportado por País (Litros)', 'Preço Médio (US$/L)'))
 
         if option == "Valor Exportado por País (US$)":
-            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
+            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#55175e'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
             ax.update_xaxes(dtick=1)
             ax.update_layout(
             yaxis=dict(
@@ -774,7 +795,7 @@ with tab1:
             st.plotly_chart(ax, use_container_width=True)
 
         elif option == "Volume Exportado por País (Litros)":
-            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
+            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#962168'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
             bx.update_xaxes(dtick=1)
             bx.update_layout(
             yaxis=dict(
@@ -796,7 +817,7 @@ with tab1:
             st.plotly_chart(bx, use_container_width=True)
 
         elif option == "Preço Médio (US$/L)":
-            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
+            cx = px.bar(fil_toppreco, x="pais", y="preco_medio", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 3.5], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
             cx.update_xaxes(dtick=1)
             cx.update_layout(
             yaxis=dict(
@@ -818,78 +839,177 @@ with tab1:
             st.plotly_chart(cx, use_container_width=True)
         
     st.markdown("""---""")
-    st.markdown('<p class="tab1-title">Países: Top 3 - Observando de Perto</p>', unsafe_allow_html=True)
-
+    st.markdown('<p class="tab1-title">Top 3 - Observando de Perto</p>', unsafe_allow_html=True)
+    st.markdown(':mag_right: <h class="about3-style">Análises:</h>', unsafe_allow_html=True)
+    st.write("- O investimento do Paraguai em vinhos brasileiros é crescente desde 2016, o que o tornou o principal importador de vinhos brasileiros na atualidade.")
+    st.write("- Apesar do destaque em valor e volume exportado, a Rússia deixou de adquirir os vinhos brasileiros em 2014: ano em que o país enfrentou diversas sanções internacionais.<p>O ano de maior aquisição de vinhos não acompanha uma grande crescente no valor investido.</p>", unsafe_allow_html=True)
+    st.write("- Embora não seja importador de um montante equivalente aos países citados anteriormente, os Estados Unidos investem em vinhos de melhor qualidade e maior rentabilidade. <p>O ano de 2017 é um exemplo: o país investiu um valor alto na segunda menor quantidade de litros adquirida nos últimos 15 anos.</p>", unsafe_allow_html=True)
+    st.write(" ")
     option = st.selectbox(
         'Selecione o dado:',
         ('Paraguai', 'Rússia', 'Estados Unidos'))
 
     if option == "Paraguai":
-            ax = px.bar(topvalor, x="pais", y="valor", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Valor Exportado (US$) - Período: 2008 a 2022")
-            ax.update_xaxes(dtick=1)
-            ax.update_layout(
-            yaxis=dict(
-            title="Valor Exportado (US$)",
-            titlefont=dict(size=16),
-            tickfont=dict(size=14),
-            showgrid=True,
-            gridcolor="#c2c0c0",
-            griddash="dash",
-            title_standoff=30 # The higher the value, the farther away it is displayed
-            ),
-            xaxis = dict(
-            title="Ano",
-            tickmode = 'array',
-            titlefont=dict(size=16),
-            tickfont=dict(size=14),
-            title_standoff=30 # The higher the value, the farther away it is displayed
-            ))
+            coluna8, coluna9 = st.columns(2, gap="large")
+            with coluna8:
+                ax = px.line(df_quinze[df_quinze["pais"] == "Paraguai"], x="ano", y="quantidade", width=800, height=500, range_x=[2007, 2023], range_y=[0, 8_000_000], title="Volume Exportado por Ano (Litros)", line_shape="spline", markers=True)
+                ax.update_xaxes(dtick=1)
+                ax.update_layout(                
+                yaxis=dict(
+                title="Volume Exportado (Litros)",
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#dedede",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ),
+                xaxis = dict(
+                title="Ano",
+                tickmode = 'array',
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#c2c0c0",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ))
+                ax.update_traces(line_color='#d10d47', line_width=3.5, marker=dict(size=10))
+                st.plotly_chart(ax, use_container_width=True)
 
-            st.plotly_chart(ax, use_container_width=True)
+            with coluna9:
+                ax = px.line(df_quinze[df_quinze["pais"] == "Paraguai"], x="ano", y="valor", width=800, height=500, range_x=[2007, 2023], range_y=[0, 8_000_000], title="Valor Exportado por Ano (US$)", line_shape="spline", markers=True)
+                ax.update_xaxes(dtick=1)
+                ax.update_layout(                
+                yaxis=dict(
+                title="Valor Exportado (US$)",
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#dedede",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ),
+                xaxis = dict(
+                title="Ano",
+                tickmode = 'array',
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#c2c0c0",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ))
+                ax.update_traces(line_color='#55175e', line_width=3.5, marker=dict(size=10))
+                st.plotly_chart(ax, use_container_width=True)
 
     elif option == "Rússia":
-            bx = px.bar(topvol, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 5 Países - Volume Exportado (Litros) - Período: 2008 a 2022")
-            bx.update_xaxes(dtick=1)
-            bx.update_layout(
-            yaxis=dict(
-            title="Volume Exportado (Litros)",
-            titlefont=dict(size=16),
-            tickfont=dict(size=14),
-            showgrid=True,
-            gridcolor="#c2c0c0",
-            griddash="dash",
-            title_standoff=30 # The higher the value, the farther away it is displayed
-            ),
-            xaxis = dict(
-            title="Ano",
-            tickmode = 'array',
-            titlefont=dict(size=16),
-            tickfont=dict(size=14),
-            title_standoff=30 # The higher the value, the farther away it is displayed
-            ))
-            st.plotly_chart(bx, use_container_width=True)
+            coluna8, coluna9 = st.columns(2, gap="large")
+            with coluna8:
+                ax = px.line(df_quinze[df_quinze["pais"] == "Rússia"], x="ano", y="quantidade", width=800, height=500, range_x=[2007, 2023], range_y=[0, 23_000_000], title="Volume Exportado por Ano (Litros)", line_shape="spline", markers=True)
+                ax.update_xaxes(dtick=1)
+                ax.update_layout(                
+                yaxis=dict(
+                title="Volume Exportado (Litros)",
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#dedede",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ),
+                xaxis = dict(
+                title="Ano",
+                tickmode = 'array',
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#c2c0c0",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ))
+                ax.update_traces(line_color='#d10d47', line_width=3.5, marker=dict(size=10))
+                st.plotly_chart(ax, use_container_width=True)
+
+            with coluna9:
+                ax = px.line(df_quinze[df_quinze["pais"] == "Rússia"], x="ano", y="valor", width=800, height=500, range_x=[2007, 2023], range_y=[0, 23_000_000], title="Valor Exportado por Ano (US$)", line_shape="spline", markers=True)
+                ax.update_xaxes(dtick=1)
+                ax.update_layout(                
+                yaxis=dict(
+                title="Valor Exportado (US$)",
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#dedede",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ),
+                xaxis = dict(
+                title="Ano",
+                tickmode = 'array',
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#c2c0c0",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ))
+                ax.update_traces(line_color='#55175e', line_width=3.5, marker=dict(size=10))
+                st.plotly_chart(ax, use_container_width=True)
 
     elif option == "Estados Unidos":
-            cx = px.bar(fil_toppreco, x="pais", y="quantidade", color_discrete_sequence=['#c43366'], width=800, height=500, range_y=[0, 41_000_000], title="Top 3 Países - Preço Médio do Litro de Vinho (US$/L) - Período: 2008 a 2022")
-            cx.update_xaxes(dtick=1)
-            cx.update_layout(
-            yaxis=dict(
-            title="Preço Médio (US$/L)",
-            titlefont=dict(size=16),
-            tickfont=dict(size=14),
-            showgrid=True,
-            gridcolor="#c2c0c0",
-            griddash="dash",
-            title_standoff=30 # The higher the value, the farther away it is displayed
-            ),
-            xaxis = dict(
-            title="Ano",
-            tickmode = 'array',
-            titlefont=dict(size=16),
-            tickfont=dict(size=14),
-            title_standoff=30 # The higher the value, the farther away it is displayed
-            ))
-            st.plotly_chart(cx, use_container_width=True)
+            coluna8, coluna9 = st.columns(2, gap="large")
+            with coluna8:
+                ax = px.line(df_quinze[df_quinze["pais"] == "Estados Unidos"], x="ano", y="quantidade", width=800, height=500, range_x=[2007, 2023], range_y=[0, 1_650_000], title="Volume Exportado por Ano (Litros)", line_shape="spline", markers=True)
+                ax.update_xaxes(dtick=1)
+                ax.update_layout(                
+                yaxis=dict(
+                title="Volume Exportado (Litros)",
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#dedede",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ),
+                xaxis = dict(
+                title="Ano",
+                tickmode = 'array',
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#c2c0c0",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ))
+                ax.update_traces(line_color='#d10d47', line_width=3.5, marker=dict(size=10))
+                st.plotly_chart(ax, use_container_width=True)
+
+            with coluna9:
+                ax = px.line(df_quinze[df_quinze["pais"] == "Estados Unidos"], x="ano", y="valor", width=800, height=500, range_x=[2007, 2023], range_y=[0, 1_650_000], title="Valor Exportado por Ano (US$)", line_shape="spline", markers=True)
+                ax.update_xaxes(dtick=1)
+                ax.update_layout(                
+                yaxis=dict(
+                title="Valor Exportado (US$)",
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#dedede",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ),
+                xaxis = dict(
+                title="Ano",
+                tickmode = 'array',
+                titlefont=dict(size=16),
+                tickfont=dict(size=14),
+                showgrid=True,
+                gridcolor="#c2c0c0",
+                griddash="dot",
+                title_standoff=30 # The higher the value, the farther away it is displayed
+                ))
+                ax.update_traces(line_color='#55175e', line_width=3.5, marker=dict(size=10))
+                st.plotly_chart(ax, use_container_width=True)
 
 with tab2:
     df_display = df_total
@@ -909,19 +1029,32 @@ with tab2:
         "lon": "Longitude"
         }
     )
-    st.dataframe(df_display)
+    st.dataframe(df_display, use_container_width=True)
 
-#with tab3:
-    ## GRAFICO MAPA
-    #df_mapa = df_total.groupby("pais")[['valor']].sum()
-    #df_mapa = df_total.drop_duplicates(subset='pais')[["pais", "lat", "lon"]].merge(df_total, left_on="pais", right_index=True).sort_values("valor", ascending=False)
-
-    #fig_mapa_receita = px.scatter_geo(df_mapa,
-    #                                  lat='lat',
-    #                                  lon='lon',
-    #                                  size='valor',
-    #                                  template='seaborn',
-    #                                  hover_name='pais',
-    #                                  hover_data={'lat':False, 'lon':False},
-    #                                  title='Valor (US$) de Exportação por País')
-    #st.plotly_chart(fig_mapa_receita)
+with tab3:
+    st.write(" ")
+    st.markdown('<p class="tab1-title">Paraguai</p>', unsafe_allow_html=True)
+    st.markdown(':pushpin: <h class="about3-style">Conclusões:</h>', unsafe_allow_html=True)
+    st.write("- A relação comercial entre Brasil e Paraguai na comercialização de vinhos é robusta, com o Paraguai emergindo como o principal importador de vinhos brasileiros,<p>impulsionado pela falta de produção interna, demanda crescente e proximidade geográfica favorável.</p>", unsafe_allow_html=True)
+    st.write("- O investimento crescente do Paraguai em vinhos brasileiros desde 2016 sugere uma tendência positiva e oportunidades de crescimento contínuo nas exportações brasileiras de vinho para o país.<p>A economia do país também vem passando por uma transformação significativa desde 2016, com investimentos em diversas áreas que impulsionam o crescimento e a diversificação do país.</p>", unsafe_allow_html=True)
+    st.write("- Para melhorar ainda mais as exportações, é crucial manter e fortalecer parcerias comerciais estratégicas com o Paraguai, explorar oportunidades de mercado emergentes <p>e investir em estratégias para aumentar a conscientização e a preferência pelos vinhos brasileiros no país.</p>", unsafe_allow_html=True)
+    st.write("- Além disso, estabelecer uma boa relação com o governo paraguaio para facilitar o comércio e reduzir barreiras comerciais <p>também pode contribuir para o crescimento sustentável das exportações de vinho brasileiro para o Paraguai.</p>", unsafe_allow_html=True)
+    st.write(" ")    
+    st.markdown("""---""")
+    st.markdown('<p class="tab1-title">Estados Unidos</p>', unsafe_allow_html=True)
+    st.markdown(':pushpin: <h class="about3-style">Conclusões:</h>', unsafe_allow_html=True)
+    st.write("- A relação comercial entre Brasil e Estados Unidos na comercialização de vinhos é caracterizada por uma compra consistente e crescente,<p> embora não seja o maior comprador, adquirindo vinhos brasileiros a um custo médio mais elevado em comparação com outros países.</p>", unsafe_allow_html=True)
+    st.write("- Os Estados Unidos demonstram preferência por vinhos de melhor qualidade e maior rentabilidade, apesar de não importarem um volume equivalente aos principais compradores. <p>Isso sugere uma oportunidade de explorar segmentos de mercado de maior valor agregado.</p>", unsafe_allow_html=True)
+    st.write("- Prospecções futuras devem considerar o potencial de crescimento nos Estados Unidos, tanto em termos de volume quanto de valor,<p>e investir em estratégias de marketing e promoção direcionadas para atrair consumidores norte-americanos.</p>", unsafe_allow_html=True)
+    st.write("- Ações a serem tomadas incluem o desenvolvimento de parcerias estratégicas com distribuidores e importadores nos Estados Unidos, participação em feiras<p> e eventos do setor para ganhar visibilidade, e aprimoramento da qualidade e diversidade dos vinhos brasileiros para atender às preferências do consumidor norte-americano.</p>", unsafe_allow_html=True)
+    st.write(" ")
+    st.markdown("""---""")
+    st.markdown('<p class="tab1-title">Rússia</p>', unsafe_allow_html=True)
+    st.markdown(':pushpin: <h class="about3-style">Conclusões:</h>', unsafe_allow_html=True)
+    st.write("- A relação comercial entre Brasil e Rússia na comercialização de vinhos foi marcada pelo grande volume de exportações brasileiras para a Rússia, <p>priorizando vinhos de baixa qualidade adquiridos pelo Programa de Escoamento de Produção (PEP).</p>", unsafe_allow_html=True)
+    st.write("- A Rússia enfrentou sanções internacionais em 2014 devido à invasão da Crimeia e atualmente está em guerra com a Ucrânia, <p>o que afeta diretamente as suas relações comerciais e pode ter contribuiu para a interrupção das importações de vinhos brasileiros.</p>", unsafe_allow_html=True)
+    st.write("- Prospecções futuras devem considerar a instabilidade geopolítica e econômica na Rússia, bem como a preferência do país por vinhos mais acessíveis. <p>Ações a serem tomadas devem inluir monitoramento contínuo das condições políticas e econômicas.</p>", unsafe_allow_html=True)
+    st.write(" ")
+    st.markdown("""---""")
+    st.write(" ")
+    st.markdown('<h class="about3-style">Fontes: <h n class="about2-style"><a href="https://www.gazetadopovo.com.br/politica/republica/paraguai-reinventa-economia-e-vai-de-primo-pobre-a-estrela-da-america-latina-6k7nm8k52792th72ue1028irw/#:~:text=Em%202016%2C%20é%20esperada%20uma,à%20atividade%20econômica%20do%20país.">1</a> | <a href="https://www.h2foz.com.br/fronteira/inflacao-2023-paraguai/">2</a>  | <a href="https://blogs.oglobo.globo.com/lauro-jardim/post/paraguai-e-o-maior-importador-de-vinho-brasileiro.html">3</a>  | <a href="http://www.iea.sp.gov.br/ftpiea/ie/2007/tec2-1107.pdf">4</a> | <a href="https://www.terra.com.br/economia/operacoes-cambiais/operacoes-empresariais/russia-lidera-ranking-dos-importadores-do-vinho-brasileiro,90ebabcae33ee310VgnVCM5000009ccceb0aRCRD.html">5</a> | <a href="https://exame.com/casual/os-sonhos-frustrados-na-regiao-do-vinho-da-russia-e-o-dedo-de-putin/">6</a> | <a href="https://winefun.com.br/sede-sem-fim-saiba-quais-sao-os-paises-que-mais-importam-vinho-no-mundo/">7</a></h></h>', unsafe_allow_html=True)
